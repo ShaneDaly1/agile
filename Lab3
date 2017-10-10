@@ -1,0 +1,44 @@
+#include "mbed.h"
+#include "C12832.h"
+#include "LM75B.h"
+
+AnalogIn setTemp(p19);
+AnalogIn setRGB(p20);
+PwmOut speaker(p26);
+PwmOut r(p23);
+PwmOut g(p24);
+PwmOut b(p25);
+C12832 lcd(p5, p7, p6, p8, p11);
+LM75B sensor(p28,p27);
+double tempMax;
+double brightness;
+
+int main() {
+
+  lcd.cls();
+  lcd.locate(0,1);
+  r = 0.0;
+g = 0.0;
+b = 0.0;
+
+
+
+    if(sensor.open()) {
+        while(1) {
+
+            tempMax = setTemp * 25;
+            brightness = setRGB * 25 ;
+r = 1.0;
+            lcd.locate(0,1);
+            lcd.printf("Pot1 = %.2f\n", tempMax);
+            lcd.locate(0,15);
+            lcd.printf("Pot2 = %.2f\n", brightness);
+            speaker.period(1/1);
+            speaker=tempMax;
+        wait(0.5);
+        }
+  } else {
+
+      }
+
+}
